@@ -5,7 +5,7 @@
 class List : public Sequence
 {
 public:
-	List(const std::vector<Type*>& vec);
+	List(std::vector<Type*>&& vec);
 	~List();
 
 	bool isPrintable() const override;

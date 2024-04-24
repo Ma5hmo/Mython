@@ -1,7 +1,7 @@
 #include "String.h"
 
-String::String(const std::string& value)
-	: _value(value)
+String::String(std::string&& value)
+	: _value(std::move(value))
 {
 }
 

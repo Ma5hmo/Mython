@@ -1,7 +1,7 @@
 #include "List.h"
 
-List::List(const std::vector<Type*>& vec)
-	: _vec(vec)
+List::List(std::vector<Type*>&& vec)
+	: _vec(std::move(vec))
 {
 }
 

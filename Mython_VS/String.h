@@ -6,7 +6,7 @@
 class String : public Sequence
 {
 public:
-	String(const std::string& value);
+	String(std::string&& value);
 	bool isPrintable() const override;
 	std::string toString() const override;
 

@@ -112,7 +112,6 @@ bool Parser::makeAssignment(const std::string& str)
 	Type* valueType = getVariableValue(value); // search it as a name in the existing variables
 	if (valueType == nullptr) // variable doesnt exist
 	{
-
 		valueType = getType(value);
 		if (valueType == nullptr) // not a valid variable
 		{
@@ -167,5 +166,5 @@ List* Parser::parseList(const std::string& str)
 		}
 		vec.push_back(t);
 	}
-	return new List(vec);
+	return new List(std::move(vec));
 }
