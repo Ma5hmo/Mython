@@ -29,4 +29,10 @@ private:
 
 
     static std::unordered_map<std::string, Type*> _variables;
+
+    static constexpr auto TRUE_STRING = "True";
+    static constexpr auto OPENING_BRACKET = '[';
+    static constexpr auto CLOSING_BRACKET = ']';
+    static constexpr auto EQUALS_SIGN = '=';
+
 };

@@ -6,6 +6,10 @@
 class Helper
 {
 public:
+	static TypeCode getTypeCode(const std::string& s);
+
+	static bool isList(const std::string& s);
+
 	// check if the parameter is valid Integer value
 	static bool isInteger(const std::string& s);
 
@@ -42,4 +46,13 @@ public:
 	// remove leading zeros from the beginning of the string
 	static void removeLeadingZeros(std::string &str); 
 
+};
+
+enum class TypeCode
+{
+	Boolean,
+	Integer,
+	String,
+	List,
+	Void
 };

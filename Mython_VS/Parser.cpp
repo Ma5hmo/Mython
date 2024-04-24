@@ -33,38 +33,16 @@ Type* Parser::parseString(std::string& str)
 
 Type* Parser::getType(std::string& str)
 {
-	Type* ret = nullptr;
-	Helper::trim(str);
-	if (str.empty())
+	static std::unordered_map<TypeCode, std::function<Type*(const std::string&)>> codeToTypeObject =
 	{
-		return nullptr;
-	}
+		{ TypeCode::Boolean, [](const std::string& s) { return new Boolean(s == "True" ? true : false); }},
+		{ TypeCode::Integer, [](const std::string& s) { return new Integer(std::stoi(s)); }},
+		{ TypeCode::String,  [](const std::string& s) { return new String(s.substr(1, s.length() - 2)); }},
+		{ TypeCode::Void,    [](const std::string& s) { return makeAssignment(s) ? new Void() : nullptr; }}
+	};
 
-	if (Helper::isBoolean(str))
-	{
-		ret = new Boolean(str == "True" ? true : false);
-	}
-	else if (Helper::isInteger(str))
-	{
-		ret = new Integer(std::stoi(str));
-	}
-	else if (Helper::isString(str))
-	{
-		ret = new String(str.substr(1, str.length() - 2));
-	}
-	else if (str[0] == '[' && str[str.length() - 1] == ']')
-	{
-		ret = parseList(str);
-	}
-	else if (makeAssignment(str))
-	{
-		ret = new Void();
-	}
-	else
-	{
-		return nullptr;
-	}
-	return ret;
+	Helper::trim(str);
+	return codeToTypeObject.at(Helper::getTypeCode(str))(str);
 }
 
 void Parser::freeMemory()
@@ -94,7 +72,7 @@ bool Parser::isLegalVarName(const std::string& str)
 
 bool Parser::makeAssignment(const std::string& str)
 {
-	const auto equalsSignPos = str.find('=');
+	const auto equalsSignPos = str.find(EQUALS_SIGN);
 	if (equalsSignPos == std::string::npos || equalsSignPos == 0)
 	{
 		return false;
@@ -122,10 +100,10 @@ bool Parser::makeAssignment(const std::string& str)
 			throw SyntaxException();
 		}
 	}
-	else
+	else // variable exists, copy the value
 	{
 		auto typeToString = valueType->toString();
-		if (typeToString[0] != '[') // a list shouldnt be deep copied
+		if (!Helper::isList(typeToString)) // a list shouldnt be deep copied
 		{
 			valueType = getType(typeToString); // for deep copying
 		}

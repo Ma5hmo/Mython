@@ -1,5 +1,30 @@
 #include "Helper.h"
 
+TypeCode Helper::getTypeCode(const std::string& str)
+{
+	if (isBoolean(str))
+	{
+		return TypeCode::Boolean;
+	}
+	if (isInteger(str))
+	{
+		return TypeCode::Integer;
+	}
+	if (isString(str))
+	{
+		return TypeCode::String;
+	}
+	if (isList(str))
+	{
+		return TypeCode::List;
+	}
+	return TypeCode::Void;
+}
+
+bool Helper::isList(const std::string& s)
+{
+	return s[0] == '[' && s[s.length() - 1] == ']';
+}
 
 bool Helper::isInteger(const std::string& s)
 {
@@ -43,14 +68,14 @@ bool Helper::isDigit(const char c)
 	return (c >= '0' && c <= '9');
 }
 
-void Helper::trim(std::string &str)
+void Helper::trim(std::string& str)
 {
 	rtrim(str);
 	ltrim(str);
 
 }
 
-void Helper::rtrim(std::string &str)
+void Helper::rtrim(std::string& str)
 {
 	size_t endpos = str.find_last_not_of(" \t");
 	if (std::string::npos != endpos)
@@ -59,7 +84,7 @@ void Helper::rtrim(std::string &str)
 	}
 }
 
-void Helper::ltrim(std::string &str)
+void Helper::ltrim(std::string& str)
 {
 	size_t startpos = str.find_first_not_of(" \t");
 	if (std::string::npos != startpos)
@@ -68,7 +93,7 @@ void Helper::ltrim(std::string &str)
 	}
 }
 
-void Helper::removeLeadingZeros(std::string &str)
+void Helper::removeLeadingZeros(std::string& str)
 {
 	size_t startpos = str.find_first_not_of("0");
 	if (std::string::npos != startpos)
@@ -76,9 +101,6 @@ void Helper::removeLeadingZeros(std::string &str)
 		str = str.substr(startpos);
 	}
 }
-
-
-
 
 bool Helper::isLowerLetter(const char c)
 {
