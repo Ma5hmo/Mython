@@ -11,7 +11,7 @@ std::unordered_map<std::string, Type*> Parser::_variables;
 
 Type* Parser::parseString(std::string& str)
 {
-	if (str[0] == ' ' || str[0] == '\t')
+	if (str[0] == SPACE_CHAR || str[0] == TAB_CHAR)
 	{
 		throw IndentationException();
 	}
@@ -33,11 +33,12 @@ Type* Parser::parseString(std::string& str)
 
 Type* Parser::getType(std::string& str)
 {
-	static std::unordered_map<TypeCode, std::function<Type*(const std::string&)>> codeToTypeObject =
+	static const std::unordered_map<TypeCode, std::function<Type* (const std::string&)>> codeToTypeObject =
 	{
-		{ TypeCode::Boolean, [](const std::string& s) { return new Boolean(s == "True" ? true : false); }},
+		{ TypeCode::Boolean, [](const std::string& s) { return new Boolean(s == TRUE_STRING ? true : false); }},
 		{ TypeCode::Integer, [](const std::string& s) { return new Integer(std::stoi(s)); }},
 		{ TypeCode::String,  [](const std::string& s) { return new String(s.substr(1, s.length() - 2)); }},
+		{ TypeCode::List,    [](const std::string& s) { return parseList(s); }},
 		{ TypeCode::Void,    [](const std::string& s) { return makeAssignment(s) ? new Void() : nullptr; }}
 	};
 
@@ -137,12 +138,25 @@ List* Parser::parseList(const std::string& str)
 	std::vector<Type*> vec;
 	while (std::getline(listStream, segment, ','))
 	{
-		const auto t = getType(segment);
-		if (t == nullptr)
+		Type* val = nullptr;
+		if (Helper::getTypeCode(segment) == TypeCode::Void)
 		{
-			throw NameErrorException(segment);
+			val = getVariableValue(segment);
+			if (val == nullptr) // variable doesnt exist
+			{
+				throw NameErrorException(segment);
+			}
+			auto valString = val->toString();
+			if (!Helper::isList(valString))
+			{
+				val = getType(valString); // deep copy the variable
+			}
 		}
-		vec.push_back(t);
+		else
+		{
+			val = getType(segment);
+		}
+		vec.push_back(val);
 	}
 	return new List(std::move(vec));
 }

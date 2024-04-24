@@ -1,6 +1,14 @@
 #pragma once
 #include <string>
 
+enum class TypeCode
+{
+	Boolean,
+	Integer,
+	String,
+	List,
+	Void
+};
 
 // this is service class with static functions
 class Helper
@@ -46,13 +54,4 @@ public:
 	// remove leading zeros from the beginning of the string
 	static void removeLeadingZeros(std::string &str); 
 
-};
-
-enum class TypeCode
-{
-	Boolean,
-	Integer,
-	String,
-	List,
-	Void
 };

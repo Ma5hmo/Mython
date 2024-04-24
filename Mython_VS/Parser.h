@@ -34,5 +34,7 @@ private:
     static constexpr auto OPENING_BRACKET = '[';
     static constexpr auto CLOSING_BRACKET = ']';
     static constexpr auto EQUALS_SIGN = '=';
+    static constexpr auto SPACE_CHAR = ' ';
+    static constexpr auto TAB_CHAR = '\t';
 
 };

@@ -1,20 +1,20 @@
 #include "Helper.h"
 
-TypeCode Helper::getTypeCode(const std::string& str)
+TypeCode Helper::getTypeCode(const std::string& s)
 {
-	if (isBoolean(str))
+	if (isBoolean(s))
 	{
 		return TypeCode::Boolean;
 	}
-	if (isInteger(str))
+	if (isInteger(s))
 	{
 		return TypeCode::Integer;
 	}
-	if (isString(str))
+	if (isString(s))
 	{
 		return TypeCode::String;
 	}
-	if (isList(str))
+	if (isList(s))
 	{
 		return TypeCode::List;
 	}
