@@ -138,6 +138,7 @@ List* Parser::parseList(const std::string& str)
 	std::vector<Type*> vec;
 	while (std::getline(listStream, segment, ','))
 	{
+		Helper::trim(segment);
 		Type* val = nullptr;
 		if (Helper::getTypeCode(segment) == TypeCode::Void)
 		{
