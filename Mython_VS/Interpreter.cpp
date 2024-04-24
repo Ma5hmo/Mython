@@ -16,7 +16,6 @@ int main(int argc, char** argv)
 	// get new command from user
 	std::cout << ">>> ";
 	std::getline(std::cin, inp_string);
-
 	while (inp_string != "quit()")
 	{
 		if (inp_string.length() != 0)

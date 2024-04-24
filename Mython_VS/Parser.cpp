@@ -9,7 +9,7 @@
 
 std::unordered_map<std::string, Type*> Parser::_variables;
 
-Type* Parser::parseString(std::string str)
+Type* Parser::parseString(std::string& str)
 {
 	if (str[0] == ' ' || str[0] == '\t')
 	{
@@ -75,7 +75,7 @@ void Parser::freeMemory()
 	}
 }
 
-bool Parser::isLegalVarName(std::string str)
+bool Parser::isLegalVarName(const std::string& str)
 {
 	if (Helper::isDigit(str[0]))
 	{
@@ -92,7 +92,7 @@ bool Parser::isLegalVarName(std::string str)
 	return true;
 }
 
-bool Parser::makeAssignment(std::string str)
+bool Parser::makeAssignment(const std::string& str)
 {
 	const auto equalsSignPos = str.find('=');
 	if (equalsSignPos == std::string::npos || equalsSignPos == 0)
@@ -141,7 +141,7 @@ bool Parser::makeAssignment(std::string str)
 	return true;
 }
 
-Type* Parser::getVariableValue(std::string str)
+Type* Parser::getVariableValue(const std::string& str)
 {
 	try
 	{
@@ -168,19 +168,4 @@ List* Parser::parseList(const std::string& str)
 		vec.push_back(t);
 	}
 	return new List(vec);
-}
-
-const std::unordered_map<const char*, std::string> Parser::typeNameMap =
-{ { typeid(Integer()).name(), "int"}, {typeid(Boolean()).name(), "bool"},
-	{ typeid(String()).name(), "str"} };
-
-
-std::string Parser::getVariableTypeName(Type* t)
-{
-	const auto type = typeid(t).name();
-	if (typeNameMap.find(type) == typeNameMap.end()) // list isnt in the map since it has an annoying consturctor
-	{
-		return "<type 'list'>";
-	}
-	return "<type '" + typeNameMap.at(type) + "'>";
 }

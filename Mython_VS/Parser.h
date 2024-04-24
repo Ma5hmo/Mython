@@ -17,19 +17,16 @@
 class Parser
 {
 public:
-    static Type* parseString(std::string str);
+    static Type* parseString(std::string& str);
     static Type* getType(std::string& str);
-    static std::string getVariableTypeName(Type* t);
     static void freeMemory();
 
 private:
-    static bool isLegalVarName(std::string str);
-    static bool makeAssignment(std::string str);
-    static Type* getVariableValue(std::string str);
+    static bool isLegalVarName(const std::string& str);
+    static bool makeAssignment(const std::string& str);
+    static Type* getVariableValue(const std::string& str);
     static List* parseList(const std::string& str);
 
 
     static std::unordered_map<std::string, Type*> _variables;
-
-    static const std::unordered_map<const char*, std::string> typeNameMap;
 };
